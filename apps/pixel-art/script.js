@@ -22,6 +22,9 @@
   const customColorLabel = document.getElementById('custom-color-label');
   const clearAllBtn = document.getElementById('clear-all-btn');
   const exportBtn = document.getElementById('export-btn');
+  const confirmOverlay = document.getElementById('confirm-overlay');
+  const confirmOkBtn = document.getElementById('confirm-ok-btn');
+  const confirmCancelBtn = document.getElementById('confirm-cancel-btn');
 
   let currentColor = PRESET_COLORS[0];
 
@@ -144,12 +147,37 @@
     });
   });
 
-  // ---- 전체 지우기 ----
-  clearAllBtn.addEventListener('click', () => {
-    const confirmed = window.confirm('전체 그림을 지울까요? 이 작업은 되돌릴 수 없습니다.');
-    if (!confirmed) return;
+  // ---- 전체 지우기 (네이티브 confirm() 대신 자체 모달 사용) ----
+  // 일부 브라우저/임베디드 환경에서는 window.confirm()이 다이얼로그를
+  // 띄우지 못하고 자동으로 false를 반환해 버튼이 동작하지 않는 것처럼
+  // 보이는 문제가 있어, 페이지 안에 직접 그리는 확인 모달로 대체한다.
+  function openConfirmDialog() {
+    confirmOverlay.classList.remove('hidden');
+    confirmOkBtn.focus();
+  }
+
+  function closeConfirmDialog() {
+    confirmOverlay.classList.add('hidden');
+  }
+
+  clearAllBtn.addEventListener('click', openConfirmDialog);
+
+  confirmOkBtn.addEventListener('click', () => {
     pixels = new Array(SIZE * SIZE).fill(null);
     ctx.clearRect(0, 0, SIZE, SIZE);
+    closeConfirmDialog();
+  });
+
+  confirmCancelBtn.addEventListener('click', closeConfirmDialog);
+
+  confirmOverlay.addEventListener('click', (e) => {
+    if (e.target === confirmOverlay) closeConfirmDialog();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !confirmOverlay.classList.contains('hidden')) {
+      closeConfirmDialog();
+    }
   });
 
   // ---- PNG 내보내기 ----
