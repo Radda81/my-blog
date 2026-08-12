@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>픽셀 아트 에디터</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app-wrap">
+    <h1 class="title">픽셀 아트 에디터</h1>
+    <p class="instructions">클릭/드래그로 칸을 칠하세요. 지우개로 지울 수 있어요.</p>
+
+    <div class="canvas-wrap">
+      <canvas id="pixel-canvas" width="16" height="16"></canvas>
+      <div class="grid-overlay" aria-hidden="true"></div>
+    </div>
+
+    <div class="palette" id="palette">
+      <!-- 프리셋 스와치는 script.js에서 렌더링 -->
+      <button type="button" class="swatch eraser-swatch" id="eraser-btn" data-color="" title="지우개" aria-label="지우개">
+        <span class="eraser-icon" aria-hidden="true"></span>
+      </button>
+      <label class="swatch custom-swatch" id="custom-color-label" title="커스텀 색상">
+        <input type="color" id="custom-color-input" value="#ff0000" aria-label="커스텀 색상 선택">
+      </label>
+    </div>
+
+    <button type="button" class="btn btn-secondary" id="clear-all-btn">전체 지우기</button>
+    <button type="button" class="btn btn-primary btn-export" id="export-btn">PNG로 저장</button>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

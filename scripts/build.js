@@ -18,6 +18,11 @@ const apps = [
     description: '방향키/스와이프로 타일을 밀어 합치는 퍼즐 게임. 점수판과 최고 기록을 지원합니다.',
     path: 'apps/2048/index.html',
   },
+  {
+    name: '픽셀 아트 에디터',
+    description: '16x16 격자에 클릭/드래그로 도트를 찍어 그림을 그리고 PNG로 저장할 수 있는 에디터.',
+    path: 'apps/pixel-art/index.html',
+  },
 ];
 
 function copyFile(from, to) {

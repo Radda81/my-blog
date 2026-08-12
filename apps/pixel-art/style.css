@@ -1,0 +1,185 @@
+:root {
+  --color-bg: #faf8ef;
+  --color-text: #3b2f2f;
+  --color-panel-bg: #eee4da;
+  --color-btn-bg: #8f7a66;
+  --color-btn-text: #f9f6f2;
+  --color-danger-bg: #c0392b;
+  --checker-light: #f2f2f2;
+  --checker-dark: #d9d9d9;
+  --grid-line: rgba(0, 0, 0, 0.15);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+  display: flex;
+  justify-content: center;
+  padding: 24px 12px 48px;
+}
+
+.app-wrap {
+  width: min(94vw, 480px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 0;
+  align-self: flex-start;
+}
+
+.instructions {
+  align-self: flex-start;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin: 0 0 8px;
+}
+
+/* 캔버스 + 그리드 오버레이 */
+.canvas-wrap {
+  position: relative;
+  width: min(94vw, 60vh, 420px);
+  aspect-ratio: 1 / 1;
+  border-radius: 8px;
+  overflow: hidden;
+  background-image:
+    repeating-conic-gradient(var(--checker-light) 0% 25%, var(--checker-dark) 0% 50%);
+  background-size: 20px 20px;
+  box-shadow: 0 0 0 2px var(--color-panel-bg);
+  touch-action: none;
+}
+
+#pixel-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  touch-action: none;
+  cursor: crosshair;
+}
+
+.grid-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(to right, var(--grid-line) 0, var(--grid-line) 1px, transparent 1px, transparent calc(100% / 16)),
+    repeating-linear-gradient(to bottom, var(--grid-line) 0, var(--grid-line) 1px, transparent 1px, transparent calc(100% / 16));
+}
+
+/* 팔레트 */
+.palette {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.swatch {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
+  border-radius: 6px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  padding: 0;
+  touch-action: manipulation;
+}
+
+.swatch.active {
+  border-color: #333;
+  box-shadow: 0 0 0 2px #fff inset;
+}
+
+.eraser-swatch {
+  background-image:
+    repeating-conic-gradient(var(--checker-light) 0% 25%, var(--checker-dark) 0% 50%);
+  background-size: 12px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.eraser-icon {
+  width: 60%;
+  height: 60%;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.custom-swatch {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-image:
+    repeating-conic-gradient(var(--checker-light) 0% 25%, var(--checker-dark) 0% 50%);
+  background-size: 12px 12px;
+}
+
+/* input[type=color] 자체가 현재 선택된 색상을 보여주는 작은 표시 역할을 한다 */
+.custom-swatch input[type="color"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  background: none;
+}
+
+/* 버튼 */
+.btn {
+  width: 100%;
+  background: var(--color-btn-bg);
+  color: var(--color-btn-text);
+  border: none;
+  border-radius: 6px;
+  padding: 12px 18px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.btn:hover {
+  filter: brightness(1.1);
+}
+
+.btn-secondary {
+  background: var(--color-danger-bg);
+}
+
+.btn-primary {
+  background: var(--color-btn-bg);
+}
+
+.btn-export {
+  margin-top: 4px;
+}
+
+@media (max-width: 420px) {
+  .title {
+    font-size: 1.6rem;
+  }
+}
