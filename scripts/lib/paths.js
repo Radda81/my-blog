@@ -25,3 +25,16 @@ export function emptyDir(dirPath) {
   fs.rmSync(dirPath, { recursive: true, force: true });
   fs.mkdirSync(dirPath, { recursive: true });
 }
+
+export function copyDir(fromDir, toDir, { skipExtensions = [] } = {}) {
+  ensureDir(toDir);
+  for (const entry of fs.readdirSync(fromDir, { withFileTypes: true })) {
+    const from = path.join(fromDir, entry.name);
+    const to = path.join(toDir, entry.name);
+    if (entry.isDirectory()) {
+      copyDir(from, to, { skipExtensions });
+    } else if (!skipExtensions.includes(path.extname(entry.name))) {
+      fs.copyFileSync(from, to);
+    }
+  }
+}

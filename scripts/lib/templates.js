@@ -49,7 +49,7 @@ ${renderFooter()}
 `;
 }
 
-export function renderIndexPage(posts, { themeInitScript }) {
+export function renderIndexPage(posts, apps, { themeInitScript }) {
   const basePath = '';
   const items = posts
     .map(
@@ -61,7 +61,25 @@ export function renderIndexPage(posts, { themeInitScript }) {
     )
     .join('\n');
 
-  const main = `  <h1 class="page-title">Posts</h1>
+  const appItems = apps
+    .map(
+      (app) => `    <li class="post-card">
+      <h2 class="post-card__title"><a href="${app.path}">${escapeHtml(app.name)}</a></h2>
+      <p class="post-card__excerpt">${escapeHtml(app.description)}</p>
+    </li>`
+    )
+    .join('\n');
+
+  const appsSection = apps.length
+    ? `  <h1 class="page-title">Apps</h1>
+  <ul class="post-list">
+${appItems}
+  </ul>
+
+`
+    : '';
+
+  const main = `${appsSection}  <h1 class="page-title">Posts</h1>
   <ul class="post-list">
 ${items}
   </ul>`;

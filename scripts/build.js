@@ -3,13 +3,22 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadAllPosts } from './lib/markdown.js';
 import { renderIndexPage, renderPostPage } from './lib/templates.js';
-import { ensureDir, emptyDir } from './lib/paths.js';
+import { ensureDir, emptyDir, copyDir } from './lib/paths.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, '..');
 const postsDir = path.join(rootDir, 'posts');
 const srcDir = path.join(rootDir, 'src');
+const appsDir = path.join(rootDir, 'apps');
 const distDir = path.join(rootDir, 'dist');
+
+const apps = [
+  {
+    name: '2048',
+    description: '방향키/스와이프로 타일을 밀어 합치는 퍼즐 게임. 점수판과 최고 기록을 지원합니다.',
+    path: 'apps/2048/index.html',
+  },
+];
 
 function copyFile(from, to) {
   ensureDir(path.dirname(to));
@@ -40,11 +49,15 @@ function build() {
     'utf-8'
   );
 
+  if (fs.existsSync(appsDir)) {
+    copyDir(appsDir, path.join(distDir, 'apps'), { skipExtensions: ['.md'] });
+  }
+
   const posts = loadAllPosts(postsDir);
 
   fs.writeFileSync(
     path.join(distDir, 'index.html'),
-    renderIndexPage(posts, { themeInitScript })
+    renderIndexPage(posts, apps, { themeInitScript })
   );
 
   for (const post of posts) {
